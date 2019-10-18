@@ -1,6 +1,6 @@
 # CodeAnalyzer
 
-This project lists all classes from a given path and shows all methods (with parameters) for the class.
+This project lists all classes from a given path and shows all methods (with parameters) for each class.
 
 ## Usage
 ```
@@ -21,5 +21,5 @@ foreach($CodeAnalyzer->getCodeClasses() as $CodeClass) { ?>
     
 <?php } ?>
 ``` 
-
+## Preview
 ![Preview](https://i.ibb.co/TqGJsLM/pifunwu.png)
