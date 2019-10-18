@@ -80,12 +80,8 @@ class Method
      */
     public function parametersToString(): string
     {
-        return implode(", ", array_map(function(Parameter $Argument) {
-            return implode(" ", array_filter([
-                $Argument->getType(),
-                "$".$Argument->getName(),
-                $Argument->getDefault() !== NULL ? " = ".$Argument->getDefault() : NULL
-            ]));
+        return implode(", ", array_map(function(Parameter $Parameter) {
+            return $Parameter->toString();
         }, $this->parameters));
     }
 
@@ -95,11 +91,7 @@ class Method
     public function parametersToHTML(): string
     {
         return implode(", ", array_map(function(Parameter $Parameter) {
-            return implode(" ", array_filter([
-                '<span class="param_type">'.$Parameter->getType().'</span>',
-                '<span class="param_name">'."$".$Parameter->getName().'</span>',
-                $Parameter->getDefault() !== NULL ? " = <span class=\"param_default\">{$Parameter->getDefault()}</span>" : NULL
-            ]));
+            return $Parameter->toHTML();
         }, $this->parameters));
     }
 
