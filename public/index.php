@@ -15,7 +15,7 @@ Autoloader::register();
     <body>
         <?php
 
-        $path = __DIR__."/../../EvaleaRep/tool/tool/classes";
+        $path = __DIR__."/../src";
 
         $CodeAnalyzer = CodeAnalyzer::analyzePath($path);
 
