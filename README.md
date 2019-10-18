@@ -3,7 +3,7 @@
 This project lists all classes from a given path and shows all methods (with parameters) for each class.
 
 ## Usage
-```
+```php
 $path = __DIR__."/../src";
 
 $CodeAnalyzer = CodeAnalyzer::analyzePath($path);
