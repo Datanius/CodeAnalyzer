@@ -116,12 +116,8 @@ class Method
      */
     public function parametersToString(): string
     {
-        return implode(", ", array_map(function(Parameter $Argument) {
-            return implode(" ", array_filter([
-                $Argument->getType(),
-                "$".$Argument->getName(),
-                $Argument->getDefault() !== NULL ? " = ".$Argument->getDefault() : NULL
-            ]));
+        return implode(", ", array_map(function(Parameter $Parameter) {
+            return $Parameter->toString();
         }, $this->parameters));
     }
 

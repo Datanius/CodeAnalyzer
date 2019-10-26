@@ -28,4 +28,4 @@ foreach($CodeAnalyzer->getCodeClasses() as $CodeClass) { ?>
 <?php } ?>
 ``` 
 ## Preview
-![Preview](https://i.ibb.co/TqGJsLM/pifunwu.png)
+![Preview](https://i.ibb.co/T2BN8jj/grafik.png)

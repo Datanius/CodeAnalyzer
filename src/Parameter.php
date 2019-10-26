@@ -57,6 +57,36 @@ class Parameter
     }
 
     /**
+     * @return string
+     */
+    public function toString(): string
+    {
+        return implode(" ", array_filter([
+            $this->getType() ?: NULL,
+            "$".$this->getName(),
+            $this->getDefault() !== NULL
+                ? " = ".$this->getDefault()
+                : NULL
+        ]));
+    }
+
+    /**
+     * @return string
+     */
+    public function toHTML(): string
+    {
+        return implode(" ", array_filter([
+            !empty($this->type)
+                ? '<span class="param_type">'.$this->getType().'</span>'
+                : NULL,
+            '<span class="param_name">'."$".$this->getName().'</span>',
+            $this->getDefault() !== NULL
+                ? " = <span class=\"param_default\">{$this->getDefault()}</span>"
+                : NULL
+        ]));
+    }
+
+    /**
      * @return string|null
      */
     public function getType(): ?string
