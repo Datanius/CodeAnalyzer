@@ -1,9 +1,33 @@
 <?php
 
+/**
+ * Class CodeClass
+ */
 class CodeClass
 {
+    /**
+     * @var array
+     */
     private $methods = [];
+
+    /**
+     * @var ClassParameter[]
+     */
+    private $parameters = [];
+
+    /**
+     * @var string
+     */
     private $name = "";
+
+    /**
+     * @var string
+     */
+    private $namespace = "";
+
+    /**
+     * @var int
+     */
     private $lines = 0;
 
     /**
@@ -15,7 +39,9 @@ class CodeClass
     {
         $CodeClass = new CodeClass();
         $CodeClass->name = $CodeClass->extractClassName($fileContent);
+        $CodeClass->namespace = $CodeClass->extractNamespace($fileContent);
         $CodeClass->methods = $CodeClass->extractMethods($fileContent);
+        $CodeClass->parameters = $CodeClass->extractClassParameters($fileContent);
         $CodeClass->lines = $CodeClass->countLines($fileContent);
         return $CodeClass;
     }
@@ -25,8 +51,7 @@ class CodeClass
      */
     public function getTitle(): string
     {
-        $methodCount = count($this->methods);
-        return "{$this->getName()} ({$methodCount} methods) {$this->getLines()} lines";
+        return "{$this->getNamespace()}{$this->getName()} ({$this->getMethodCount()} method" . ($this->getMethodCount() === 1 ? '' : 's') . ") {$this->getLines()} line" . ($this->getLines() === 1 ? '' : 's');
     }
 
     /**
@@ -35,6 +60,14 @@ class CodeClass
     public function getMethods(): array
     {
         return $this->methods;
+    }
+
+    /**
+     * @return ClassParameter[]
+     */
+    public function getClassParameters(): array
+    {
+        return $this->parameters;
     }
 
     /**
@@ -54,6 +87,14 @@ class CodeClass
     }
 
     /**
+     * @return string
+     */
+    public function getNamespace(): string
+    {
+        return $this->namespace ? $this->namespace . "\\" : "";
+    }
+
+    /**
      * @return int
      */
     public function getLines(): int
@@ -68,7 +109,7 @@ class CodeClass
      */
     private function extractClassName(string $fileContent): string
     {
-        $pattern = "/class (?<classname>\w+)/";
+        $pattern = "/class\s+(?<classname>\w+)/";
         preg_match($pattern, $fileContent, $matches);
 
         if( ! isset($matches["classname"])) {
@@ -80,11 +121,43 @@ class CodeClass
 
     /**
      * @param string $fileContent
+     * @return string
+     */
+    private function extractNamespace(string $fileContent): string
+    {
+        $pattern = "/^\s*namespace\s+(?<namespace>.*);/m";
+        preg_match($pattern, $fileContent, $matches);
+
+        if( ! isset($matches["namespace"])) {
+            return "";
+        }
+        return $matches["namespace"] ?? "";
+    }
+
+    /**
+     * @param string $fileContent
+     * @return array
+     */
+    private function extractClassParameters(string $fileContent): array
+    {
+        $pattern = "/(?<visibility>public|private|protected)\s+(?<param>\\$[a-zA-Z]+[a-zA-Z0-9]*\s*.*?);/"; // \s+(?<param>$[a-zA-Z]+[a-zA-Z0-9]*)/
+        preg_match_all($pattern, $fileContent, $matches);
+        $parameters = [];
+        foreach($matches[0] as $index => $match) {
+            $Parameter = ClassParameter::fromString($matches["param"][$index]);
+            $Parameter->setVisibility($matches["visibility"][$index]);
+            $parameters[] = $Parameter;
+        }
+        return $parameters;
+    }
+
+    /**
+     * @param string $fileContent
      * @return Method[]
      */
     private function extractMethods(string $fileContent): array
     {
-        $pattern = "/(?<visibility>public|private|protected)? (?<isStatic>static )*function (?<name>\w+)\((?<params>.*)\)/";
+        $pattern = "/(?<visibility>public|private|protected)?\s+(?<isStatic>static )*function\s+(?<name>\w+)\((?<params>.*)\)\s*(?<returnType>:\s*[\\a-zA-Z0-9]+)*/";
         preg_match_all($pattern, $fileContent, $matches);
         $methods = [];
         foreach($matches[0] as $index => $match) {
@@ -93,6 +166,7 @@ class CodeClass
             $Method->setName($matches["name"][$index]);
             $Method->setIsStatic(trim($matches["isStatic"][$index]) !== "");
             $Method->setParameters($this->extractParameters($matches["params"][$index]));
+            $Method->setReturnType(trim($matches["returnType"][$index]));
             $methods[] = $Method;
         }
         return $methods;

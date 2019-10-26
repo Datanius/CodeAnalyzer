@@ -1,10 +1,30 @@
 <?php
 
+/**
+ * Class Method
+ */
 class Method 
 {
+
+    /**
+     * @var string|null
+     */
 	private $visibility;
-	private $isStatic;
+
+    /**
+     * @var bool
+     */
+	private $isStatic = false;
+
+    /**
+     * @var string|null
+     */
 	private $name;
+
+    /**
+     * @var string|null
+     */
+	private $returnType;
 
     /**
      * @var Parameter[]
@@ -12,49 +32,49 @@ class Method
 	private $parameters = [];
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getVisibility()
+    public function getVisibility(): ?string
     {
         return $this->visibility;
     }
 
     /**
-     * @param mixed $visibility
+     * @param string $visibility
      */
-    public function setVisibility($visibility): void
+    public function setVisibility(string $visibility): void
     {
         $this->visibility = $visibility;
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getisStatic()
+    public function getisStatic(): bool
     {
         return $this->isStatic;
     }
 
     /**
-     * @param mixed $isStatic
+     * @param bool $isStatic
      */
-    public function setIsStatic($isStatic): void
+    public function setIsStatic(bool $isStatic): void
     {
         $this->isStatic = $isStatic;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -73,6 +93,22 @@ class Method
     public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setReturnType(string $type): void
+    {
+        $this->returnType = $type;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReturnType(): ?string
+    {
+        return $this->returnType;
     }
 
     /**
@@ -98,7 +134,19 @@ class Method
     /**
      * @return string
      */
-    public function toString() {
+    public function returnToHTML(): string
+    {
+        if(!$this->getReturnType()) {
+            return '';
+        }
+        return "<span class='method_return'>" . $this->getReturnType() . "</span>";
+    }
+
+    /**
+     * @return string
+     */
+    public function toString(): string
+    {
         return implode(" ", [
             $this->getVisibility(),
             $this->getisStatic() ? "static" : "",
@@ -110,14 +158,15 @@ class Method
     /**
      * @return string
      */
-    public function toHTML()
+    public function toHTML(): string
     {
         return implode(" ", [
             "<span class='visibility'>".$this->getVisibility().'</span>',
             $this->getisStatic() ? "<span class='static'>static</span>" : "",
             "function",
             "<span class='method_name'>".$this->getName().'</span>',
-            "({$this->parametersToHTML()})"
+            "({$this->parametersToHTML()})",
+            "{$this->returnToHTML()}"
         ]);
     }
 }
