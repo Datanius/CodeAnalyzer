@@ -23,7 +23,7 @@ class Parameter
 
     /**
      * @param string $paramStr
-     * @return self
+     * @return static
      */
     public static function fromString(string $paramStr): self
     {

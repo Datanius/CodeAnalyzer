@@ -21,15 +21,25 @@ class CodeAnalyzer
     {
         $CodeAnalyzer = new CodeAnalyzer();
 
-        $files = array_filter($CodeAnalyzer->getAllFilesFromPath($filePath), function(\SplFileInfo $file) {
-            return in_array($file->getExtension(), self::ALLOWED_EXTENSIONS);
-        });
+        $files = array_filter(
+            $CodeAnalyzer->getAllFilesFromPath($filePath),
+            [$CodeAnalyzer, "isFileValid"]
+        );
 
         array_walk($files, function(\SplFileInfo $file) use ($CodeAnalyzer) {
             $CodeAnalyzer->codeFiles[] = CodeFile::fromFileInfo($file);
         });
 
         return $CodeAnalyzer;
+    }
+
+    /**
+     * @param SplFileInfo $file
+     * @return bool
+     */
+    public function isFileValid(\SplFileInfo $file): bool
+    {
+        return in_array($file->getExtension(), self::ALLOWED_EXTENSIONS);
     }
 
     /**
