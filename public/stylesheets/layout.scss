@@ -12,7 +12,7 @@ html, body {
 }
 
 body {
-  background: #555;
+  background: #efefef;
   font-family: "Source Code Pro", serif;
 }
 
@@ -25,13 +25,35 @@ header {
 
 .method-list {
   background: white;
+  -webkit-box-shadow: 0 1px 10px 1px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 1px 10px 1px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 10px 1px rgba(0,0,0,0.15);
   padding: 15px;
-  margin: 15px auto;
+  margin: 15px 20px;
   .class-name {
     font-size: 18px;
     border-bottom: 1px solid #999;
     padding: 10px 0;
     margin-bottom: 10px;
+  }
+  .parameter {
+    font-size: 12px;
+    padding: 4px 0;
+    .visibility {
+      font-weight: bold;
+      color: blue;
+    }
+    .param_type {
+      font-weight: bold;
+      color: #006a26;
+    }
+    .param_name {
+      color: blue;
+    }
+    .param_default {
+      color: black;
+      font-weight: bold;
+    }
   }
   .method {
     font-size: 12px;

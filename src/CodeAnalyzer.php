@@ -1,11 +1,22 @@
 <?php
 
+/**
+ * Class CodeAnalyzer
+ */
 class CodeAnalyzer
 {
+
+    /**
+     * @var array
+     */
     private $codeFiles = [];
 
     const ALLOWED_EXTENSIONS = ["php"];
 
+    /**
+     * @param string $filePath
+     * @return CodeAnalyzer
+     */
     public static function analyzePath(string $filePath): CodeAnalyzer
     {
         $CodeAnalyzer = new CodeAnalyzer();

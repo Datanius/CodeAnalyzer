@@ -1,18 +1,33 @@
 <?php
 
+/**
+ * Class Parameter
+ */
 class Parameter
 {
+
+    /**
+     * @var string|null
+     */
     private $type;
+
+    /**
+     * @var string|null
+     */
     private $name;
+
+    /**
+     * @var string|null
+     */
     private $default;
 
     /**
      * @param string $paramStr
-     * @return Parameter
+     * @return self
      */
-    public static function fromString(string $paramStr): Parameter
+    public static function fromString(string $paramStr): self
     {
-        $Parameter = new Parameter();
+        $Parameter = new static();
         $parts = explode(" ", trim($paramStr));
 
         while( ! empty($parts)) {
@@ -42,9 +57,9 @@ class Parameter
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -58,9 +73,9 @@ class Parameter
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -74,9 +89,9 @@ class Parameter
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDefault()
+    public function getDefault(): ?string
     {
         return $this->default;
     }
@@ -87,5 +102,17 @@ class Parameter
     public function setDefault(string $default): void
     {
         $this->default = $default;
+    }
+
+    /**
+     * @return string
+     */
+    public function toHTML(): string
+    {
+        return implode(" ", array_filter([
+            '<span class="param_type">'.$this->getType().'</span>',
+            '<span class="param_name">'."$".$this->getName().'</span>',
+            $this->getDefault() !== NULL ? " = <span class=\"param_default\">{$this->getDefault()}</span>" : NULL
+        ]));
     }
 }

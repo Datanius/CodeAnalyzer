@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class CodeFile
+ */
 class CodeFile
 {
     /**
