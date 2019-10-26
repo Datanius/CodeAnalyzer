@@ -40,7 +40,7 @@ header {
   font-size: 12px;
   padding: 4px 0;
 }
-.method-list .parameter .visibility {
+.method-list .parameter .param_visibility {
   font-weight: bold;
   color: blue;
 }
@@ -49,7 +49,7 @@ header {
   color: #006a26;
 }
 .method-list .parameter .param_name {
-  color: blue;
+  color: #27AAE1;
 }
 .method-list .parameter .param_default {
   color: black;
