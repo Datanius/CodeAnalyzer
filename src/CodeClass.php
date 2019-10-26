@@ -6,7 +6,7 @@
 class CodeClass
 {
     /**
-     * @var array
+     * @var Method[]
      */
     private $methods = [];
 
@@ -51,7 +51,11 @@ class CodeClass
      */
     public function getTitle(): string
     {
-        return "{$this->getNamespace()}{$this->getName()} ({$this->getMethodCount()} method" . ($this->getMethodCount() === 1 ? '' : 's') . ") {$this->getLines()} line" . ($this->getLines() === 1 ? '' : 's');
+        $classInfo = "{$this->getNamespace()}{$this->getName()}";
+        $methodInfo = "({$this->getMethodCount()} " . ($this->getMethodCount() === 1 ? 'method' : 'methods') . ")";
+        $lineInfo = "{$this->getLines()} " . ($this->getLines() === 1 ? 'line' : 'lines');
+
+        return implode(" ", [$classInfo, $methodInfo, $lineInfo]);
     }
 
     /**
