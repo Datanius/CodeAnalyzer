@@ -12,6 +12,11 @@ foreach($CodeAnalyzer->getCodeClasses() as $CodeClass) { ?>
 
     <div class="method-list">
         <div class="class-name"><?php echo $CodeClass->getTitle();?></div>
+        <?php foreach($CodeClass->getClassParameters() as $ClassParameter) { ?>
+            <div class="parameter">
+                <?php echo $ClassParameter->toHTML(); ?>
+            </div>
+        <?php } ?>
         <?php foreach($CodeClass->getMethods() as $Method) { ?>
             <div class="method">
                 <?php echo $Method->toHTML(); ?>
