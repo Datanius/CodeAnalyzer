@@ -144,12 +144,14 @@ class CodeClass
      */
     private function extractClassParameters(string $fileContent): array
     {
-        $pattern = "/(?<visibility>public|private|protected)\s+(?<param>\\$[a-zA-Z]+[a-zA-Z0-9]*\s*.*?);/"; // \s+(?<param>$[a-zA-Z]+[a-zA-Z0-9]*)/
+        $pattern = "/(?<visibility>public|private|protected)\s+(?<isStatic>static )*(?<type>[a-zA-Z]+[_a-zA-Z0-9]*\s*)?(?<param>\\$[a-zA-Z]+[_a-zA-Z0-9]*);/"; // \s+(?<param>$[a-zA-Z]+[a-zA-Z0-9]*)/
         preg_match_all($pattern, $fileContent, $matches);
         $parameters = [];
         foreach($matches[0] as $index => $match) {
             $Parameter = ClassParameter::fromString($matches["param"][$index]);
             $Parameter->setVisibility($matches["visibility"][$index]);
+            $Parameter->setType($matches["type"][$index]);
+            $Parameter->setIsStatic(trim($matches["isStatic"][$index]) !== "");
             $parameters[] = $Parameter;
         }
         return $parameters;
